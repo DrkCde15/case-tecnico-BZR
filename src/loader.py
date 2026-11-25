@@ -59,12 +59,21 @@ def load_csv(file):
     return df
 
 
-hub = Path('./dados/hub.csv')
-tribunal = Path('./dados/tribunal.csv')
-apresentacao = Path('./dados/apresentacoes.json')
-pagamentos = Path('./dados/pagamentos.json')
+def main():
+    """Lê e imprime os arquivos brutos, para inspeção manual."""
+    diretorio = Path(__file__).resolve().parent.parent / "dados"
 
-print(load_csv(hub))
-print(load_csv(tribunal))
-print(load_json(apresentacao))
-print(load_json(pagamentos))
+    arquivos = (
+        ("hub.csv", load_csv),
+        ("tribunal.csv", load_csv),
+        ("apresentacoes.json", load_json),
+        ("pagamentos.json", load_json),
+    )
+
+    for nome, carregar in arquivos:
+        print(f"\n{nome}:")
+        print(carregar(diretorio / nome))
+
+
+if __name__ == "__main__":
+    main()
