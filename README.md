@@ -8,9 +8,12 @@ dados/processo, limpeza dos arquivos brutos em Python e propostas de prevenção
 ```
 dados/                    arquivos brutos do tribunal (não alterar)
 schema.sql                esquema atual do banco
+main.py                   ponto de entrada: executa a limpeza completa
 src/loader.py             leitura tolerante de CSV/JSON
 src/norm.py               normalização de processo, nome, valor e data
 src/validacao.py          validação e classificação dos eventos de pagamento
+src/prazo.py              regra constitucional de prazo (2 de abril)
+src/limpeza.py            limpeza dos arquivos e geração do relatório
 tests/                    testes das camadas acima
 requirements.txt          dependências
 ENUNCIADO.md              enunciado do case
@@ -29,8 +32,9 @@ python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 
-python -m src.loader  # lê e imprime os arquivos de dados/
+python main.py        # executa a limpeza e gera a pasta saida/
 pytest                # roda a suíte de testes
+python -m src.loader  # utilitário: imprime os arquivos brutos para inspeção
 ```
 
 ## Testes
@@ -45,7 +49,13 @@ Os testes cobrem as camadas de entrada e validação:
 - `tests/test_validacao.py` — validação de um evento (campos obrigatórios, tipo,
   valor positivo, timestamps) e classificação em importáveis, corrigidos,
   descartados e pendentes, incluindo duplicatas idênticas e divergentes.
+- `tests/test_limpeza.py` — mapeamento dos campos reais de cada arquivo,
+  deduplicação, recálculo de prazo no hub, reconciliação de processos e
+  gravação dos artefatos de saída.
+- `tests/test_prazo.py` — regra do prazo constitucional, incluindo a data de
+  corte de 2 de abril.
 
 ## Uso de IA
 
-A ser preenchido: quais ferramentas foram usadas e como o resultado foi conferido.
+- Ferramentas: Opencode (geração de sugestões de código e testes) e ChatGPT
+  (arquitetura do projeto).
