@@ -1,9 +1,6 @@
 import json
-
 import pytest
-
-from loader import load_csv, load_json
-
+from src.loader import load_csv, load_json
 
 class TestLoadJson:
     def test_le_json_utf8(self, tmp_path):
