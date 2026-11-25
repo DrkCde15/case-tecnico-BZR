@@ -147,8 +147,6 @@ def classificar_eventos(eventos: list[dict]) -> dict:
 
             if sao_identicos:
                 # Mantém uma ocorrência e descarta as repetições.
-                registros = registros[:1]
-
                 for indice, registro in registros[1:]:
                     resultado["descartados"].append({
                         "indice": indice,
@@ -156,6 +154,8 @@ def classificar_eventos(eventos: list[dict]) -> dict:
                         "registro": registro,
                         "motivo": "Duplicata idêntica de outro registro."
                     })
+
+                registros = registros[:1]
 
             else:
                 for indice, registro in registros:

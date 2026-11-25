@@ -1,10 +1,7 @@
 from datetime import date
 from decimal import Decimal
-
 import pytest
-
 from src.validacao import classificar_eventos, validar_evento
-
 
 def evento(**overrides):
     base = {
@@ -205,17 +202,15 @@ class TestClassificarEventos:
         assert resultado["importaveis"][0]["evento_id"] == "ev-001"
         assert resultado["pendentes"] == []
 
-    @pytest.mark.xfail(
-        reason=(
-            "bug conhecido: após registros = registros[:1] a lista de "
-            "repetições fica vazia e nada é gravado em descartados"
-        ),
-        strict=False,
-    )
-    def test_duplicata_identica_deveria_ser_registrada_em_descartados(self):
+    def test_duplicata_identica_e_registrada_em_descartados(self):
         resultado = classificar_eventos([evento(), evento()])
 
         assert len(resultado["descartados"]) == 1
+        assert resultado["descartados"][0]["indice"] == 1
+        assert (
+            resultado["descartados"][0]["motivo"]
+            == "Duplicata idêntica de outro registro."
+        )
 
     def test_duplicata_com_conteudo_divergente_vai_para_pendentes(self):
         resultado = classificar_eventos(
