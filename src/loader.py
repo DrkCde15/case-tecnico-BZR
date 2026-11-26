@@ -1,6 +1,5 @@
 import csv
 import json
-from pathlib import Path
 import pandas as pd
 
 def load_json(file):
@@ -57,23 +56,3 @@ def load_csv(file):
     df.attrs["delimiter"] = delimiter
     df.attrs["encoding"] = encoding
     return df
-
-
-def main():
-    """Lê e imprime os arquivos brutos, para inspeção manual."""
-    diretorio = Path(__file__).resolve().parent.parent / "dados"
-
-    arquivos = (
-        ("hub.csv", load_csv),
-        ("tribunal.csv", load_csv),
-        ("apresentacoes.json", load_json),
-        ("pagamentos.json", load_json),
-    )
-
-    for nome, carregar in arquivos:
-        print(f"\n{nome}:")
-        print(carregar(diretorio / nome))
-
-
-if __name__ == "__main__":
-    main()
