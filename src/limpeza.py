@@ -3,7 +3,6 @@ import json
 from datetime import date, datetime
 from decimal import Decimal
 from pathlib import Path
-
 from src.norm import (
     converter_data,
     converter_valor,
