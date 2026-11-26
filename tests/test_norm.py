@@ -1,14 +1,12 @@
 from datetime import date, datetime
 from decimal import Decimal
 import pytest
-
 from src.norm import (
     converter_data,
     converter_valor,
     normalizar_nome,
     normalizar_processo,
 )
-
 
 class TestNormalizarProcesso:
     def test_mantem_numero_ja_formatado(self):

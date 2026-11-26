@@ -15,11 +15,12 @@ src/validacao.py          validação e classificação dos eventos de pagamento
 src/prazo.py              regra constitucional de prazo (2 de abril)
 src/limpeza.py            limpeza dos arquivos e geração do relatório
 tests/                    testes das camadas acima
-DIAGNOSTICO.md            diagnóstico, prevenção e dúvidas
+docs/DIAGNOSTICO.md       diagnóstico, prevenção e dúvidas
 migrations/001_prevencao.sql  correções de schema e controle de importação
+scripts/testar_prevencao.py  teste da migração em bancos temporários
 requirements.txt          dependências
-ENUNCIADO.md              enunciado do case
-DOCUMENTACAO_TRIBUNAL.md  leiaute dos arquivos de integração
+docs/ENUNCIADO.md         enunciado do case
+docs/DOCUMENTACAO_TRIBUNAL.md  leiaute dos arquivos de integração
 ```
 
 ## Requisitos
@@ -55,7 +56,18 @@ psql -h localhost -U postgres -d precatorios -v ON_ERROR_STOP=1 \
   -f migrations/001_prevencao.sql
 ```
 
-O diagnóstico, a prevenção e as dúvidas estão em `DIAGNOSTICO.md`.
+O script abaixo aplica o schema e a migração em dois bancos temporários
+(`teste_prevencao` e `teste_conflito`), valida as regras e o rollback, e apaga
+os bancos no final:
+
+```bash
+python scripts/testar_prevencao.py --container pgcase
+```
+
+Use `--local --host localhost --port 5432 --user postgres` para testar com o
+`psql` do host, e `--keep` para manter os bancos e inspecionar.
+
+O diagnóstico, a prevenção e as dúvidas estão em `docs/DIAGNOSTICO.md`.
 
 ## Testes
 

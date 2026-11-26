@@ -2,7 +2,6 @@ from datetime import date
 import pytest
 from src.prazo import calcular_prazo
 
-
 @pytest.mark.parametrize(
     "apresentado_em, esperado",
     [
