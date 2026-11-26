@@ -15,6 +15,8 @@ src/validacao.py          validação e classificação dos eventos de pagamento
 src/prazo.py              regra constitucional de prazo (2 de abril)
 src/limpeza.py            limpeza dos arquivos e geração do relatório
 tests/                    testes das camadas acima
+DIAGNOSTICO.md            diagnóstico, prevenção e dúvidas
+migrations/001_prevencao.sql  correções de schema e controle de importação
 requirements.txt          dependências
 ENUNCIADO.md              enunciado do case
 DOCUMENTACAO_TRIBUNAL.md  leiaute dos arquivos de integração
@@ -34,8 +36,26 @@ pip install -r requirements.txt
 
 python main.py        # executa a limpeza e gera a pasta saida/
 pytest                # roda a suíte de testes
-python -m src.loader  # utilitário: imprime os arquivos brutos para inspeção
 ```
+
+## Saída
+
+`python main.py` grava em `saida/` as bases limpas (`*_limpos.json` e
+`*_limpos.csv`), o `relatorio_limpeza.json` e os registros descartados e
+pendentes, com o motivo de cada um.
+
+## Banco
+
+O schema atual está em `schema.sql`. As correções propostas estão em
+`migrations/001_prevencao.sql`, que deve ser aplicada em transação e só depois
+de revisar as duplicatas existentes.
+
+```bash
+psql -h localhost -U postgres -d precatorios -v ON_ERROR_STOP=1 \
+  -f migrations/001_prevencao.sql
+```
+
+O diagnóstico, a prevenção e as dúvidas estão em `DIAGNOSTICO.md`.
 
 ## Testes
 
